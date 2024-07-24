@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/02Poonam/private-repo.git', branch: 'main'
+                git url: 'https://github.com/02Poonam/Jenkins_pipeline.git', branch: 'main'
             }
         }
 
