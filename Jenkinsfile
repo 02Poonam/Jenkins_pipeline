@@ -2,22 +2,28 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = tool 'Maven-3.9.0' 
+        MAVEN_HOME = tool 'Maven-3.9.0' // Ensure this matches your Maven tool name
     }
 
     stages {
         stage('Checkout') {
             steps {
+                // Checkout code from GitHub repository
                 git url: 'https://github.com/02Poonam/Jenkins_pipeline.git', branch: 'main'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                // Build the project using Maven
+                script {
+                    withEnv(["PATH+MAVEN=${MAVEN_HOME}\\bin"]) {
+                        bat 'mvn clean install'
+                    }
                 }
             }
-        
+        }
+       
         stage('Test') {
             steps {
                 sh 'mvn test'
@@ -26,6 +32,7 @@ pipeline {
 
         stage('Archive Artifacts') {
             steps {
+                // Archive the built artifacts
                 archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             }
         }
